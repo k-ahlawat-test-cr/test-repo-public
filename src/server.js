@@ -6,6 +6,7 @@ const {
 	listUsers,
 	updateUserStatus,
 } = require("./lib/user-store")
+const { createNotificationJob } = require("./lib/notifications")
 const { buildInvoiceSummary } = require("./lib/pricing")
 
 function readJsonBody(request) {
@@ -95,6 +96,14 @@ async function requestHandler(request, response) {
 		)
 
 		sendJson(response, 200, { summary })
+		return
+	}
+
+	if (request.method === "POST" && url.pathname === "/notifications/jobs") {
+		const body = await readJsonBody(request)
+		const job = createNotificationJob(body)
+
+		sendJson(response, 201, { job })
 		return
 	}
 
