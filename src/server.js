@@ -9,6 +9,11 @@ const {
 const { buildDiscountPreview } = require("./lib/discounts")
 const { buildInvoiceSummary } = require("./lib/pricing")
 
+/**
+ * Parse the incoming HTTP request body as JSON and return the resulting object.
+ * @param {import('http').IncomingMessage} request - Incoming HTTP request whose body will be consumed.
+ * @returns {Promise<Object>} The parsed JSON object, or an empty object if the body is empty. Rejects with the JSON parse error or the request stream error.
+ */
 function readJsonBody(request) {
 	return new Promise((resolve, reject) => {
 		let body = ""
@@ -41,6 +46,22 @@ function sendJson(response, statusCode, payload) {
 	response.end(JSON.stringify(payload))
 }
 
+/**
+ * Handle incoming HTTP requests and send JSON responses for the configured API routes.
+ *
+ * Routes:
+ * - GET / -> { service: "feature-test-repo", ok: true } (200)
+ * - GET /users -> { users: listUsers() } (200)
+ * - GET /users/:id -> { user } (200) or { message: "User not found" } (404)
+ * - POST /users -> creates a user from JSON body and returns { user } (201)
+ * - PATCH /users/:id -> updates user status from JSON body and returns { user } (200) or { message: "User not found" } (404)
+ * - POST /invoices/preview -> returns { summary } built from JSON body (200)
+ * - POST /discounts/preview -> returns { preview } built from JSON body (200)
+ * - any other method/path -> { message: "Route not found" } (404)
+ *
+ * @param {import('http').IncomingMessage} request - The incoming HTTP request.
+ * @param {import('http').ServerResponse} response - The HTTP response to send JSON to.
+ */
 async function requestHandler(request, response) {
 	const url = new URL(request.url, "http://localhost")
 
