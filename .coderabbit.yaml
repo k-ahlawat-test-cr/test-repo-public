@@ -1,0 +1,68 @@
+early_access: true
+
+reviews:
+  review_status: true
+  request_changes_workflow: true
+  high_level_summary: true
+  finishing_touches:
+    docstrings:
+      enabled: true
+    unit_tests:
+      enabled: true
+    custom:
+      - name: "cleanup stale imports"
+        enabled: true
+        instructions: |
+          Remove unused imports, simplify obvious dead code, and keep behavior unchanged.
+      - name: "tighten input validation"
+        enabled: true
+        instructions: |
+          Add small validation and error-handling improvements for newly changed code without changing the public API.
+  pre_merge_checks:
+    title:
+      mode: warning
+    description:
+      mode: warning
+    issue_assessment:
+      mode: warning
+    custom_checks:
+      - name: "No TODO debt"
+        mode: warning
+        instructions: |
+          Fail if the pull request adds new TODO or FIXME comments without a linked issue reference in the same line.
+      - name: "Validate exported inputs"
+        mode: warning
+        instructions: |
+          Verify newly added or modified exported functions validate required input values before using them.
+
+chat:
+  auto_reply: true
+
+code_generation:
+  docstrings:
+    language: en-US
+  unit_tests:
+    path_instructions:
+      - path: "src/**/*.js"
+        instructions: |
+          Use the built-in node:test runner and keep tests focused on observable behavior.
+      - path: "src/**/*.ts"
+        instructions: |
+          Prefer small deterministic tests and avoid heavy mocking unless the module already uses it.
+
+knowledge_base:
+  mcp:
+    usage: enabled
+  linked_repositories:
+    - repository: "k-ahlawat-test-cr/test-repo"
+      instructions: |
+        Primary repository under test for linked-repository and configuration experiments.
+
+issue_enrichment:
+  planning:
+    enabled: true
+    auto_planning:
+      enabled: true
+      labels:
+        - enhancement
+        - bug
