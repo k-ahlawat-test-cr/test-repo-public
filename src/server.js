@@ -6,6 +6,7 @@ const {
 	listUsers,
 	updateUserStatus,
 } = require("./lib/user-store")
+const { buildDiscountPreview } = require("./lib/discounts")
 const { buildInvoiceSummary } = require("./lib/pricing")
 
 function readJsonBody(request) {
@@ -95,6 +96,14 @@ async function requestHandler(request, response) {
 		)
 
 		sendJson(response, 200, { summary })
+		return
+	}
+
+	if (request.method === "POST" && url.pathname === "/discounts/preview") {
+		const body = await readJsonBody(request)
+		const preview = buildDiscountPreview(body)
+
+		sendJson(response, 200, { preview })
 		return
 	}
 
