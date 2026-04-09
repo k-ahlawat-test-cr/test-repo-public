@@ -8,6 +8,11 @@ const {
 } = require("./lib/user-store")
 const { buildInvoiceSummary } = require("./lib/pricing")
 
+/**
+ * Parse the request's JSON body into a JavaScript value.
+ * @param {import('http').IncomingMessage} request - Incoming HTTP request whose body will be read.
+ * @returns {any} The parsed JSON value, or an empty object when the request body is empty.
+ */
 function readJsonBody(request) {
 	return new Promise((resolve, reject) => {
 		let body = ""
@@ -33,6 +38,12 @@ function readJsonBody(request) {
 	})
 }
 
+/**
+ * Send a JSON response with the specified HTTP status code and payload.
+ * @param {import('http').ServerResponse} response - The HTTP response object to write to.
+ * @param {number} statusCode - The HTTP status code for the response.
+ * @param {*} payload - The value to serialize as JSON in the response body.
+ */
 function sendJson(response, statusCode, payload) {
 	response.writeHead(statusCode, {
 		"content-type": "application/json",
@@ -40,6 +51,21 @@ function sendJson(response, statusCode, payload) {
 	response.end(JSON.stringify(payload))
 }
 
+/**
+ * Handle incoming HTTP requests and send JSON responses for the server's API routes.
+ *
+ * Routes:
+ * - GET / : returns service health { service, ok } with 200.
+ * - GET /users : returns { users: listUsers() } with 200.
+ * - GET /users/:id : returns { user } with 200 or { message: "User not found" } with 404.
+ * - POST /users : reads JSON body, creates a user, and returns { user } with 201.
+ * - PATCH /users/:id : reads JSON body, updates user status, returns { user } with 200 or 404 if not found.
+ * - POST /invoices/preview : reads JSON body, returns { summary } computed from customerName, items (defaults to []), and taxRate (defaults to 0.08) with 200.
+ * - All other routes : returns { message: "Route not found" } with 404.
+ *
+ * @param {import('http').IncomingMessage} request - The incoming HTTP request.
+ * @param {import('http').ServerResponse} response - The HTTP response used to send JSON payloads.
+ */
 async function requestHandler(request, response) {
 	const url = new URL(request.url, "http://localhost")
 
