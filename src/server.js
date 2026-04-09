@@ -6,6 +6,11 @@ const {
 	listUsers,
 	updateUserStatus,
 } = require("./lib/user-store")
+const {
+	buildDiscountContractPreview,
+	buildInvoiceContractPreview,
+} = require("./lib/contracts-preview")
+const { buildPricingAudit } = require("./lib/pricing-audit")
 const { buildInvoiceSummary } = require("./lib/pricing")
 
 function readJsonBody(request) {
@@ -95,6 +100,30 @@ async function requestHandler(request, response) {
 		)
 
 		sendJson(response, 200, { summary })
+		return
+	}
+
+	if (request.method === "POST" && url.pathname === "/pricing/audit") {
+		const body = await readJsonBody(request)
+		const audit = buildPricingAudit(body)
+
+		sendJson(response, 200, { audit })
+		return
+	}
+
+	if (request.method === "POST" && url.pathname === "/contracts/invoice") {
+		const body = await readJsonBody(request)
+		const preview = buildInvoiceContractPreview(body)
+
+		sendJson(response, 200, { preview })
+		return
+	}
+
+	if (request.method === "POST" && url.pathname === "/contracts/discount") {
+		const body = await readJsonBody(request)
+		const preview = buildDiscountContractPreview(body)
+
+		sendJson(response, 200, { preview })
 		return
 	}
 
