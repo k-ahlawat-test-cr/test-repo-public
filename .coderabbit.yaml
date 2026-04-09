@@ -54,9 +54,14 @@ knowledge_base:
   mcp:
     usage: enabled
   linked_repositories:
-    - repository: "k-ahlawat-test-cr/test-repo"
+    - repository: "k-ahlawat-test-cr/cr-linked-shared-types"
       instructions: |
-        Primary repository under test for linked-repository and configuration experiments.
+        Shared contracts for invoice summaries, discount previews, users, and notification jobs.
+        Use this repo when reviewing data shapes or API payload assumptions in the main test repo.
+    - repository: "k-ahlawat-test-cr/cr-linked-pricing-rules"
+      instructions: |
+        Pricing and discount rules reference repo. Use this when reviewing invoice tax behavior,
+        discount calculations, and pricing-related naming or logic in the main test repo.
 
 issue_enrichment:
   planning:
