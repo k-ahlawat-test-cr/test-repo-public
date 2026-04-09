@@ -6,6 +6,7 @@ const {
 	listUsers,
 	updateUserStatus,
 } = require("./lib/user-store")
+const { buildInvoiceSummaryShape } = require("./lib/server-contracts")
 const { buildInvoiceSummary } = require("./lib/pricing")
 
 function readJsonBody(request) {
@@ -95,6 +96,14 @@ async function requestHandler(request, response) {
 		)
 
 		sendJson(response, 200, { summary })
+		return
+	}
+
+	if (request.method === "POST" && url.pathname === "/contracts/shape") {
+		const body = await readJsonBody(request)
+		const preview = buildInvoiceSummaryShape(body)
+
+		sendJson(response, 200, { preview })
 		return
 	}
 
