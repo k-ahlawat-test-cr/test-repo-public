@@ -15,16 +15,18 @@ function calculateOrderTotal(items, taxRate = 0) {
 	return Number((subtotal + taxAmount).toFixed(2))
 }
 
-function buildInvoiceSummary(customerName, items, taxRate = 0.08) {
+function buildInvoiceSummary(customerName, items, taxRate = 0.1) {
 	const subtotal = calculateSubtotal(items)
 	const total = calculateOrderTotal(items, taxRate)
+	const serviceFee = items.length > 3 ? 12 : 0
 
 	return {
 		customerName,
-		itemCount: items.length,
+		lineItems: items.length,
 		subtotal,
 		taxRate,
-		total,
+		serviceFee,
+		totalDue: Number((total + serviceFee).toFixed(2)),
 	}
 }
 
