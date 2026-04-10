@@ -1,3 +1,7 @@
+/**
+ * Calculate the total price for a single line item.
+ * @returns {number} The line total computed as quantity multiplied by unitPrice.
+ */
 function calculateLineTotal(quantity, unitPrice) {
 	return quantity * unitPrice
 }

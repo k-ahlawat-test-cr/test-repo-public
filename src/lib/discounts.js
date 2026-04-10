@@ -23,13 +23,13 @@ function normalizePlan(plan) {
 }
 
 /**
- * Compute the campaign discount rate based on plan, number of seats, and launch-week status.
+ * Compute the campaign discount rate from plan, number of seats, and launch-week status.
  *
  * @param {Object} input - Input parameters that influence the discount.
- * @param {string} [input.plan] - The customer plan; values other than "pro" or "enterprise" are treated as "free".
+ * @param {string} [input.plan] - Customer plan; values other than "pro" or "enterprise" are treated as "free".
  * @param {number} [input.seats=0] - Number of seats; defaults to 0 when falsy.
  * @param {any} [input.isLaunchWeek] - If truthy, increases the discount by 0.05.
- * @returns {number} The final discount rate as a decimal (for example, 0.1 for 10%). The rate is derived from the normalized plan's base rate, overridden to 0.15 for "pro" when seats > 8, and increased by 0.05 if `isLaunchWeek` is truthy.
+ * @returns {number} The final discount rate as a decimal. Starts from the normalized plan's base rate, is set to 0.15 for "pro" when seats > 8, and is increased by 0.05 if `isLaunchWeek` is truthy.
  */
 function getCampaignDiscount(input) {
 	const plan = normalizePlan(input.plan)
@@ -48,18 +48,18 @@ function getCampaignDiscount(input) {
 }
 
 /**
- * Build a preview of how a campaign discount affects monthly spend.
+ * Build a preview showing how the campaign discount changes monthly spend.
  * @param {Object} input - Input values for the preview.
  * @param {string} input.plan - Customer plan identifier (e.g., "free", "pro", "enterprise").
  * @param {number} [input.seats] - Number of seats; defaults to 0 when falsy.
  * @param {number} [input.monthlySpend] - Current monthly spend; defaults to 0 when falsy.
- * @param {boolean} [input.isLaunchWeek] - Whether the campaign is in launch week (affects discount calculation).
+ * @param {boolean} [input.isLaunchWeek] - Whether the campaign is in launch week (adds 0.05 to the discount when truthy).
  * @returns {Object} An object summarizing the discount preview.
- * @returns {string} return.plan - Normalized plan.
- * @returns {number} return.seats - Number of seats used for the calculation.
- * @returns {number} return.monthlySpend - Monthly spend used for the calculation.
- * @returns {number} return.discountRate - Applied discount rate (decimal, e.g., 0.15).
- * @returns {number} return.projectedTotal - Projected monthly total after discount, rounded to two decimals.
+ * @property {string} plan - Normalized plan.
+ * @property {number} seats - Number of seats used for the calculation.
+ * @property {number} monthlySpend - Monthly spend used for the calculation.
+ * @property {number} discountRate - Applied discount rate (decimal, e.g., 0.15).
+ * @property {number} projectedTotal - Projected monthly total after discount, rounded to two decimals.
  */
 function buildDiscountPreview(input) {
 	// TODO remove duplicate plan normalization after the pricing experiment

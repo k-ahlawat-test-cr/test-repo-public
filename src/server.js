@@ -10,9 +10,12 @@ const { buildDiscountPreview } = require("./lib/discounts")
 const { buildInvoiceSummary } = require("./lib/pricing")
 
 /**
- * Parse the incoming HTTP request body as JSON and return the resulting object.
+ * Parse an HTTP request body as JSON and return the resulting object.
+ *
+ * If the request body is empty, resolves to an empty object.
+ *
  * @param {import('http').IncomingMessage} request - Incoming HTTP request whose body will be consumed.
- * @returns {Promise<Object>} The parsed JSON object, or an empty object if the body is empty. Rejects with the JSON parse error or the request stream error.
+ * @returns {Promise<Object>} The parsed JSON object; an empty object if the body is empty. Rejects with the JSON parse error or the request stream error.
  */
 function readJsonBody(request) {
 	return new Promise((resolve, reject) => {
