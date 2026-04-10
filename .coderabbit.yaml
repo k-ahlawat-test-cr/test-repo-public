@@ -57,6 +57,12 @@ knowledge_base:
     - repository: "k-ahlawat-test-cr/test-repo"
       instructions: |
         Primary repository under test for linked-repository and configuration experiments.
+    - repository: "k-ahlawat-test-cr/cr-linked-pricing-rules"
+      instructions: |
+        Shared pricing-rule fixtures used to validate linked-repository analysis and plan-limit behavior.
+    - repository: "k-ahlawat-test-cr/cr-linked-shared-types"
+      instructions: |
+        Shared type definitions referenced by the test repo for linked-repository context validation.
 
 issue_enrichment:
   planning:
