@@ -39,6 +39,13 @@ function readJsonBody(request) {
 	})
 }
 
+/**
+ * Send a JSON HTTP response with the given status code and payload.
+ * Sets the `Content-Type` header to `application/json` and writes the JSON-serialized `payload` as the response body.
+ * @param {import('http').ServerResponse} response - The HTTP response object to write to.
+ * @param {number} statusCode - The HTTP status code to send.
+ * @param {*} payload - The value to serialize to JSON for the response body.
+ */
 function sendJson(response, statusCode, payload) {
 	response.writeHead(statusCode, {
 		"content-type": "application/json",

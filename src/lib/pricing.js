@@ -2,6 +2,11 @@ function calculateLineTotal(quantity, unitPrice) {
 	return quantity * unitPrice
 }
 
+/**
+ * Calculate the numeric subtotal for a list of line items.
+ * @param {Array<Object>} items - Array of line items where each item has `quantity` (number) and `unitPrice` (number).
+ * @returns {number} The sum of all line totals (quantity × unitPrice).
+ */
 function calculateSubtotal(items) {
 	return items.reduce((total, item) => {
 		return total + calculateLineTotal(item.quantity, item.unitPrice)
