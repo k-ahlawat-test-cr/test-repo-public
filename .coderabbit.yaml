@@ -54,6 +54,9 @@ knowledge_base:
   mcp:
     usage: enabled
   linked_repositories:
+    - repository: "k-ahlawat-test-cr/test-repo"
+      instructions: |
+        Primary repository under test for linked-repository and configuration experiments.
     - repository: "k-ahlawat-test-cr/cr-linked-shared-types"
       instructions: |
         Shared contracts for invoice summaries, discount previews, users, and notification jobs.
