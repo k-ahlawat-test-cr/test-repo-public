@@ -19,3 +19,7 @@ other gated features.
 3. Run custom finishing touches on deliberate cleanup tasks.
 4. Run pre-merge checks against intentionally weak PR titles or descriptions.
 5. Create conflicting branches and ask CodeRabbit to resolve merge conflicts.
+
+## Test PR marker
+
+This line was added on April 12, 2026 to create a minimal public test PR.
