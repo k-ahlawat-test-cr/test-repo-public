@@ -41,6 +41,37 @@ function sendJson(response, statusCode, payload) {
 	response.end(JSON.stringify(payload))
 }
 
+function mapErrorResponse(error) {
+	if (error instanceof SyntaxError) {
+		return {
+			statusCode: 400,
+			payload: { message: "Invalid JSON body" },
+		}
+	}
+
+	if (error?.code === "INVALID_USER_INPUT") {
+		return {
+			statusCode: 400,
+			payload: { message: error.message },
+		}
+	}
+
+	if (error?.code === "DUPLICATE_USER") {
+		return {
+			statusCode: 409,
+			payload: { message: error.message },
+		}
+	}
+
+	return {
+		statusCode: 500,
+		payload: {
+			message: "Unexpected server error",
+			error: error instanceof Error ? error.message : "unknown",
+		},
+	}
+}
+
 async function requestHandler(request, response) {
 	const url = new URL(request.url, "http://localhost")
 
@@ -112,10 +143,8 @@ async function requestHandler(request, response) {
 
 const server = http.createServer((request, response) => {
 	requestHandler(request, response).catch((error) => {
-		sendJson(response, 500, {
-			message: "Unexpected server error",
-			error: error instanceof Error ? error.message : "unknown",
-		})
+		const { statusCode, payload } = mapErrorResponse(error)
+		sendJson(response, statusCode, payload)
 	})
 })
 
